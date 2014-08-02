@@ -8,25 +8,25 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-public class ItemSwipeView extends LinearLayout {
+public class CarlendarSwipeView extends LinearLayout {
 	private Context mContext;
 	private int mLastX;
 	private LinearLayout mBackView,mFrontView;
 	private int mBackViewWidth;
 	private boolean isBackViewShow;
-	public ItemSwipeView(Context context) {
+	public CarlendarSwipeView(Context context) {
 		super(context);
 		mContext = context;
 		init();
 	}
 
-	public ItemSwipeView(Context context, AttributeSet attrs, int defStyle) {
+	public CarlendarSwipeView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		mContext = context;
 		init();
 	}
 
-	public ItemSwipeView(Context context, AttributeSet attrs) {
+	public CarlendarSwipeView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mContext = context;
 		init();
@@ -73,12 +73,16 @@ public class ItemSwipeView extends LinearLayout {
 				int frontDx=mLastX-(int)event.getRawX();
 				int currentFrontLeft=mFrontLeft-frontDx;
 				int currentFrontRight=mFrontRight-frontDx;
-				if(currentFrontLeft<0)
+				if(currentFrontLeft<0){
 					mFrontView.layout(currentFrontLeft,mFrontView.getTop(),currentFrontRight, mFrontView.getBottom());
+					getParent().requestDisallowInterceptTouchEvent(true);
+				}else{
+					getParent().requestDisallowInterceptTouchEvent(false);
+				}
 				break;
 			case MotionEvent.ACTION_UP:
 				int frontDxUp=mLastX-(int)event.getRawX();
-				if(frontDxUp>mBackViewWidth/2){
+				if(frontDxUp>mBackViewWidth/2||(frontDxUp>0&&isBackViewShow)){
 					mFrontView.layout(-mBackViewWidth,mFrontView.getTop(),mBackView.getLeft(), mFrontView.getBottom());
 					isBackViewShow=true;
 				}else{

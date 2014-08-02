@@ -1,64 +1,65 @@
 package com.example.itemswipviewdemo;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
 
-public class MainActivity extends ActionBarActivity {
+import java.util.ArrayList;
+import java.util.List;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+public class MainActivity extends ActionBarActivity
+{
+  protected void onCreate(Bundle paramBundle)
+  {
+    super.onCreate(paramBundle);
+    setContentView(R.layout.activity_main);
+    if (paramBundle != null)
+      return;
+    getSupportFragmentManager().beginTransaction().add(2131034172, new PlaceholderFragment()).commit();
+  }
 
-		if (savedInstanceState == null) {
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
-		}
-	}
+  public boolean onCreateOptionsMenu(Menu paramMenu)
+  {
+    getMenuInflater().inflate(2131492864, paramMenu);
+    return true;
+  }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
 
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
+  public static class PlaceholderFragment extends Fragment
+  {
+    private CarlendarListAdapter mAdapter;
+    private List<String> mList;
+    private CarlendarListView mListView;
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+    private void init(View paramView)
+    {
+      this.mList = new ArrayList();
+      for (int i = 0; i < 26; ++i)
+      {
+        String str = ""+(char)(i + 65);
+        this.mList.add(str);
+        this.mList.add(str);
+        this.mList.add(str);
+      }
+      this.mListView = ((CarlendarListView)paramView.findViewById(R.id.lv));
+      this.mAdapter = new CarlendarListAdapter();
+      this.mAdapter.update(this.mList, getActivity());
+      this.mListView.setAdapter(this.mAdapter);
+      this.mListView.setTitle(LayoutInflater.from(getActivity()).inflate(R.layout.title, this.mListView, false));
+      this.mListView.setAdapter(this.mAdapter);
+      this.mListView.setOnScrollListener(this.mAdapter);
+    }
 
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_main, container,
-					false);
-			return rootView;
-		}
-	}
-
+    public View onCreateView(LayoutInflater paramLayoutInflater, ViewGroup paramViewGroup, Bundle paramBundle)
+    {
+      View localView = paramLayoutInflater.inflate(R.layout.fragment_main, paramViewGroup, false);
+      init(localView);
+      return localView;
+    }
+  }
 }

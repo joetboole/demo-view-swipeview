@@ -999,7 +999,7 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f050016;
         public static final int action_menu_presenter=0x7f050017;
         public static final int action_mode_close_button=0x7f050024;
-        public static final int action_settings=0x7f050043;
+        public static final int action_settings=0x7f050047;
         public static final int activity_chooser_view_content=0x7f050025;
         public static final int always=0x7f05000b;
         public static final int back=0x7f05003d;
@@ -1020,13 +1020,17 @@ containing a value of this type.
         public static final int expand_activities_button=0x7f050026;
         public static final int expanded_menu=0x7f05002c;
         public static final int front=0x7f050040;
+        public static final int header=0x7f050046;
         public static final int home=0x7f050014;
         public static final int homeAsUp=0x7f050005;
         public static final int icon=0x7f05002a;
         public static final int ifRoom=0x7f05000a;
         public static final int image=0x7f050027;
+        public static final int item_content=0x7f050045;
+        public static final int item_title=0x7f050044;
         public static final int listMode=0x7f050001;
         public static final int list_item=0x7f050029;
+        public static final int lv=0x7f050043;
         public static final int middle=0x7f050012;
         public static final int never=0x7f050009;
         public static final int none=0x7f050010;
@@ -1109,7 +1113,9 @@ containing a value of this type.
         public static final int activity_main=0x7f030017;
         public static final int calendar_swipeitem=0x7f030018;
         public static final int fragment_main=0x7f030019;
-        public static final int support_simple_spinner_dropdown_item=0x7f03001a;
+        public static final int item=0x7f03001a;
+        public static final int support_simple_spinner_dropdown_item=0x7f03001b;
+        public static final int title=0x7f03001c;
     }
     public static final class menu {
         public static final int main=0x7f0c0000;
