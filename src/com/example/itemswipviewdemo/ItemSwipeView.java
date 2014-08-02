@@ -2,7 +2,6 @@ package com.example.itemswipviewdemo;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,7 +10,7 @@ import android.widget.LinearLayout;
 
 public class ItemSwipeView extends LinearLayout {
 	private Context mContext;
-	private int mLastX,mLastY;
+	private int mLastX;
 	private LinearLayout mBackView,mFrontView;
 	private int mBackViewWidth;
 	private boolean isBackViewShow;
@@ -31,6 +30,14 @@ public class ItemSwipeView extends LinearLayout {
 		super(context, attrs);
 		mContext = context;
 		init();
+	}
+	
+	public boolean isBackViewShow() {
+		return isBackViewShow;
+	}
+
+	public void setBackViewShow(boolean isBackViewShow) {
+		this.isBackViewShow = isBackViewShow;
 	}
 
 	private void init() {
@@ -58,34 +65,25 @@ public class ItemSwipeView extends LinearLayout {
 			switch (action) {
 			case MotionEvent.ACTION_DOWN:
 				mLastX = (int) event.getRawX();
-				mLastY = (int) event.getRawY();
-				int backLeft=mBackView.getLeft();
 				mBackViewWidth=mBackView.getWidth();
 				mFrontRight=mFrontView.getRight();
 				mFrontLeft=mFrontView.getLeft();
 				break;
 			case MotionEvent.ACTION_MOVE:
 				int frontDx=mLastX-(int)event.getRawX();
-				int frontDy=(int)event.getRawY()-mLastY;
-//				if(frontDx>0){
-					int currentFrontLeft=mFrontLeft-frontDx;
-					int currentFrontRight=mFrontRight-frontDx;
-					if(currentFrontLeft<0)
-						mFrontView.layout(currentFrontLeft,mFrontView.getTop(),currentFrontRight, mFrontView.getBottom());
-//				}else if(isBackViewShow){
-//					int currentFrontLeft=mFrontLeft-frontDx;
-//					int currentFrontRight=mFrontRight-frontDx;
-//					mFrontView.layout(currentFrontLeft,mFrontView.getTop(),currentFrontRight, mFrontView.getBottom());
-//				}
-//					ItemSwipeView.this.postInvalidate();
+				int currentFrontLeft=mFrontLeft-frontDx;
+				int currentFrontRight=mFrontRight-frontDx;
+				if(currentFrontLeft<0)
+					mFrontView.layout(currentFrontLeft,mFrontView.getTop(),currentFrontRight, mFrontView.getBottom());
 				break;
 			case MotionEvent.ACTION_UP:
 				int frontDxUp=mLastX-(int)event.getRawX();
-				int frontDyUp=(int)event.getRawY()-mLastY;
 				if(frontDxUp>mBackViewWidth/2){
 					mFrontView.layout(-mBackViewWidth,mFrontView.getTop(),mBackView.getLeft(), mFrontView.getBottom());
+					isBackViewShow=true;
 				}else{
 					mFrontView.layout(0,mFrontView.getTop(),mBackView.getRight(), mFrontView.getBottom());
+					isBackViewShow=false;
 				}
 				break;
 
