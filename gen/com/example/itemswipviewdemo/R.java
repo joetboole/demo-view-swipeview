@@ -883,15 +883,54 @@ containing a value of this type.
  Minimum width of the search view text entry area. 
          */
         public static final int abc_search_view_text_min_width=0x7f08000c;
-        /**  Default screen margins, per the Android Design guidelines. 
-
+        public static final int account_hint_toppadding=0x7f08002d;
+        /**  useraccount 
+         */
+        public static final int account_hinttextsize=0x7f08002c;
+        public static final int account_verticalpadding=0x7f08002b;
+        /** 
          Example customization of dimensions originally defined in res/values/dimens.xml
          (such as screen margins) for screens with more than 820dp of available width. This
          would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively).
     
          */
-        public static final int activity_horizontal_margin=0x7f080011;
-        public static final int activity_vertical_margin=0x7f080012;
+        public static final int activity_horizontal_margin=0x7f080013;
+        public static final int activity_vertical_margin=0x7f080014;
+        public static final int capacity_margin_left_size=0x7f08002a;
+        public static final int checklist_headview_title_height=0x7f080017;
+        /**  checklist 
+         */
+        public static final int checklist_item_height=0x7f080015;
+        public static final int checklist_title_height=0x7f080016;
+        public static final int login_form_button_text_size=0x7f08002f;
+        public static final int login_text_size=0x7f08002e;
+        public static final int no_result_content_text_size=0x7f080028;
+        /**  favorites 
+         */
+        public static final int no_result_heart_icon_margin_top=0x7f080026;
+        public static final int no_result_title_text_size=0x7f080027;
+        public static final int progress_dialog_height=0x7f080023;
+        public static final int review_posted_time_text_size=0x7f080024;
+        public static final int review_tried_and_true_margin_left=0x7f080025;
+        public static final int review_user_name_text_width=0x7f080029;
+        /**  Default screen margins, per the Android Design guidelines. 
+         */
+        public static final int sliding_menu_behind_offset=0x7f080011;
+        public static final int sliding_menu_shadow_width=0x7f080012;
+        public static final int vender_call_send_msg_btn_text_size=0x7f080030;
+        public static final int vender_email_page_text_size=0x7f08001d;
+        public static final int vender_feature_text_size=0x7f08001a;
+        public static final int vender_name_text_size=0x7f080019;
+        /**  vender 
+         */
+        public static final int vender_price_range_text_size=0x7f080018;
+        public static final int vender_profile_button_text_size=0x7f08001c;
+        public static final int vender_profile_image_height=0x7f08001f;
+        public static final int vender_profile_name_text_size=0x7f08001b;
+        public static final int vender_ratingbar_max_height=0x7f080022;
+        public static final int vender_ratingbar_mix_height=0x7f080021;
+        public static final int vender_search_height_size=0x7f08001e;
+        public static final int vendor_noresult_topmargin=0x7f080020;
     }
     public static final class drawable {
         public static final int abc_ab_bottom_solid_dark_holo=0x7f020000;
@@ -986,6 +1025,9 @@ containing a value of this type.
         public static final int ic_deal_selected=0x7f020059;
         public static final int ic_launcher=0x7f02005a;
         public static final int my_account_point=0x7f02005b;
+        public static final int pulltorefresh_down_arrow=0x7f02005c;
+        public static final int pulltorefresh_up_arrow=0x7f02005d;
+        public static final int refresh_logo=0x7f02005e;
     }
     public static final class id {
         public static final int action_bar=0x7f05001c;
@@ -999,7 +1041,7 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f050016;
         public static final int action_menu_presenter=0x7f050017;
         public static final int action_mode_close_button=0x7f050024;
-        public static final int action_settings=0x7f050047;
+        public static final int action_settings=0x7f050051;
         public static final int activity_chooser_view_content=0x7f050025;
         public static final int always=0x7f05000b;
         public static final int back=0x7f05003d;
@@ -1020,7 +1062,7 @@ containing a value of this type.
         public static final int expand_activities_button=0x7f050026;
         public static final int expanded_menu=0x7f05002c;
         public static final int front=0x7f050040;
-        public static final int header=0x7f050046;
+        public static final int header=0x7f050050;
         public static final int home=0x7f050014;
         public static final int homeAsUp=0x7f050005;
         public static final int icon=0x7f05002a;
@@ -1030,6 +1072,7 @@ containing a value of this type.
         public static final int item_title=0x7f050044;
         public static final int listMode=0x7f050001;
         public static final int list_item=0x7f050029;
+        public static final int logo_refresh=0x7f050049;
         public static final int lv=0x7f050043;
         public static final int middle=0x7f050012;
         public static final int never=0x7f050009;
@@ -1060,6 +1103,15 @@ containing a value of this type.
         public static final int up=0x7f050021;
         public static final int useLogo=0x7f050003;
         public static final int withText=0x7f05000c;
+        public static final int xlistview_footer_content=0x7f050046;
+        public static final int xlistview_footer_hint_textview=0x7f050048;
+        public static final int xlistview_footer_progressbar=0x7f050047;
+        public static final int xlistview_header_arrow=0x7f05004e;
+        public static final int xlistview_header_content=0x7f05004a;
+        public static final int xlistview_header_hint_textview=0x7f05004c;
+        public static final int xlistview_header_progressbar=0x7f05004f;
+        public static final int xlistview_header_text=0x7f05004b;
+        public static final int xlistview_header_time=0x7f05004d;
     }
     public static final class integer {
         /**  The maximum number of action buttons that should be permitted within
@@ -1114,8 +1166,10 @@ containing a value of this type.
         public static final int calendar_swipeitem=0x7f030018;
         public static final int fragment_main=0x7f030019;
         public static final int item=0x7f03001a;
-        public static final int support_simple_spinner_dropdown_item=0x7f03001b;
-        public static final int title=0x7f03001c;
+        public static final int pulls_footer=0x7f03001b;
+        public static final int pulls_header=0x7f03001c;
+        public static final int support_simple_spinner_dropdown_item=0x7f03001d;
+        public static final int title=0x7f03001e;
     }
     public static final class menu {
         public static final int main=0x7f0c0000;
@@ -1161,19 +1215,31 @@ containing a value of this type.
         /**  Description of a share target (both in the list of such or the default share button) in a ShareActionProvider (share UI). [CHAR LIMIT=NONE] 
          */
         public static final int abc_shareactionprovider_share_with_application=0x7f0a000b;
-        public static final int action_settings=0x7f0a000f;
-        public static final int app_name=0x7f0a000d;
-        public static final int hello_world=0x7f0a000e;
+        public static final int action_settings=0x7f0a0019;
+        public static final int app_name=0x7f0a0017;
+        public static final int hello_world=0x7f0a0018;
+        public static final int pull_to_refresh_pull_label=0x7f0a0013;
+        public static final int pull_to_refresh_refreshing_label=0x7f0a0015;
+        public static final int pull_to_refresh_release_label=0x7f0a0014;
+        public static final int pull_to_refresh_tap_label=0x7f0a0016;
+        public static final int xlistview_footer_hint_normal=0x7f0a0011;
+        public static final int xlistview_footer_hint_ready=0x7f0a0012;
+        public static final int xlistview_header_hint_loading=0x7f0a000f;
+        public static final int xlistview_header_hint_normal=0x7f0a000d;
+        public static final int xlistview_header_hint_ready=0x7f0a000e;
+        public static final int xlistview_header_last_time=0x7f0a0010;
     }
     public static final class style {
         /** 
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+
     
 
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
+
         
 
         Base application theme for API 11+. This theme completely replaces
@@ -1192,6 +1258,7 @@ containing a value of this type.
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f0b0084;
+        public static final int CustomProgressStyle=0x7f0b0085;
         /**  Mimic text appearance in select_dialog_item.xml 
          */
         public static final int TextAppearance_AppCompat_Base_CompactMenu_Dialog=0x7f0b0063;

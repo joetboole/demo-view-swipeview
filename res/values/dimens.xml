@@ -1,7 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="sliding_menu_behind_offset">60dp</dimen>
+    <dimen name="sliding_menu_shadow_width">15dp</dimen>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-
+    
+    <!-- checklist -->
+    <dimen name="checklist_item_height">45dip</dimen>
+    <dimen name="checklist_title_height">40dip</dimen>
+    <dimen name="checklist_headview_title_height">39dip</dimen>
+    
+    <!-- vender -->
+    <dimen name="vender_price_range_text_size">16sp</dimen>
+    <dimen name="vender_name_text_size">18sp</dimen>
+    <dimen name="vender_feature_text_size">11sp</dimen>
+    <dimen name="vender_profile_name_text_size">22sp</dimen>
+    <dimen name="vender_profile_button_text_size">20sp</dimen>
+    <dimen name="vender_email_page_text_size">19sp</dimen>
+    <dimen name="vender_search_height_size">49dp</dimen>
+    <dimen name="vender_profile_image_height">220dp</dimen>
+    <dimen name="vendor_noresult_topmargin">50dp</dimen>
+    
+    <dimen name="vender_ratingbar_mix_height">18dp</dimen>
+    <dimen name="vender_ratingbar_max_height">20dp</dimen>
+    
+    <dimen name="progress_dialog_height">25dip</dimen>
+    <dimen name="review_posted_time_text_size">14sp</dimen>
+    
+    <dimen name="review_tried_and_true_margin_left">20dp</dimen>
+    
+    <!-- favorites -->
+    <dimen name="no_result_heart_icon_margin_top">53dip</dimen>
+    <dimen name="no_result_title_text_size">21sp</dimen>
+    <dimen name="no_result_content_text_size">17sp</dimen>
+    
+    <dimen name="review_user_name_text_width">60dp</dimen>
+    <dimen name="capacity_margin_left_size">5dp</dimen>
+	<dimen name="account_verticalpadding">30dp</dimen>
+	
+	<!-- useraccount -->
+	<dimen name="account_hinttextsize">16sp</dimen>
+	<dimen name="account_hint_toppadding">20dp</dimen>
+	
+	<dimen name="login_text_size">13sp</dimen>
+	
+	<dimen name="login_form_button_text_size">16sp</dimen>
+	
+	<dimen name="vender_call_send_msg_btn_text_size">16sp</dimen>
 </resources>

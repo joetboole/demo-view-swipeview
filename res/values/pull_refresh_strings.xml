@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="xlistview_header_hint_normal">pull to update</string>
+    <string name="xlistview_header_hint_ready">loose to update</string>
+    <string name="xlistview_header_hint_loading">loading...</string>
+    <string name="xlistview_header_last_time">last update time：</string>
+    <string name="xlistview_footer_hint_normal">see more</string>
+    <string name="xlistview_footer_hint_ready">loose to load more</string>
+    <string name="pull_to_refresh_pull_label" translatable="false">pull down to update</string>
+    <string name="pull_to_refresh_release_label" translatable="false">loose can update</string>
+    <string name="pull_to_refresh_refreshing_label" translatable="false">loading&#8230;</string>
+    <string name="pull_to_refresh_tap_label" translatable="false">click to update</string>
+</resources>

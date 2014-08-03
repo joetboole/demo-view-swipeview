@@ -29,18 +29,19 @@ public class CarlendarListAdapter extends BaseAdapter implements
 		return position;
 	}
 
-	public int getPositionForSection(int index) {
-		String str = this.mSections[index];
+	public int getPositionForSection(int section) {
+		String str = this.mSections[section];
 		return this.mList.indexOf(str);
 	}
 
-	public int getSectionForPosition(int firstVisiblePosition) {
-		String str = (String) this.mList.get(firstVisiblePosition);
-		for (int sectionPosition = 0; sectionPosition < this.mSections.length; ++sectionPosition) {
+	public int getSectionForPosition(int position) {
+		String str = (String) this.mList.get(position);
+		int sectionPosition = 0;
+		for (; sectionPosition < this.mSections.length; ++sectionPosition) {
 			if (this.mSections[sectionPosition] == str)
 				return sectionPosition;
 		}
-		return 0;
+		return sectionPosition;
 	}
 
 	public Object[] getSections() {
@@ -50,10 +51,10 @@ public class CarlendarListAdapter extends BaseAdapter implements
 	public int getTitleState(int firstVisiblePosition) {
 		int j = 0;
 		if ((firstVisiblePosition >= 0) && (getCount() != 0)) {
-			int listPosition = getSectionForPosition(firstVisiblePosition);
-			if ((listPosition != -1) && (listPosition <= this.mSections.length)) {
-				listPosition = getPositionForSection(1 + getSectionForPosition(firstVisiblePosition));
-				if ((listPosition == -1) || (firstVisiblePosition != listPosition - 1))
+			int sectionPosition = getSectionForPosition(firstVisiblePosition);
+			if ((sectionPosition != -1) && (sectionPosition <= this.mSections.length)) {
+				sectionPosition = getPositionForSection(1 + getSectionForPosition(firstVisiblePosition));
+				if ((sectionPosition == -1) || (firstVisiblePosition != sectionPosition - 1))
 					j = 1;
 				else
 					j = 2;

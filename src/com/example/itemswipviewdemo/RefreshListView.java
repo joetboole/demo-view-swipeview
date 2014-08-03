@@ -1,7 +1,6 @@
 package com.example.itemswipviewdemo;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -9,152 +8,87 @@ import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
-import android.widget.AbsListView.OnScrollListener;
 
-public class CarlendarListView extends ListView implements OnScrollListener {
-	private int mHeight, mWidth;
-	private CarlendarListAdapter mAdapter;
-	private View mTitle;
-	private boolean isVisible;
-	private boolean isTitleViewNeed = true;
 
-	private float mLastY = -1;
-	private Scroller mScroller;
-	private OnScrollListener mScrollListener;
 
+/**
+ * @author add by fchen
+ *
+ */
+public class RefreshListView extends ListView implements OnScrollListener {
+
+	private float mLastY = -1; // save event y
+	private Scroller mScroller; // used for scroll back
+	private OnScrollListener mScrollListener; // user's scroll listener
+
+	// the interface to trigger refresh and load more.
 	private IXListViewListener mListViewListener;
 
+	// -- header view
 	private RefreshListViewHeader mHeaderView;
+	// header view content, use it to calculate the Header's height. And hide it
+	// when disable pull refresh.
 	private RelativeLayout mHeaderViewContent;
 	private TextView mHeaderTimeView;
-	private int mHeaderViewHeight;
+	private int mHeaderViewHeight; // header view's height
 	private boolean mEnablePullRefresh = true;
-	private boolean mPullRefreshing = false;
+	private boolean mPullRefreshing = false; // is refreashing.
 
+	// -- footer view
 	private RefreshListViewFooter mFooterView;
 	private boolean mEnablePullLoad;
 	private boolean mPullLoading;
 	private boolean mIsFooterReady = false;
-
+	
+	// total list items, used to detect is at the bottom of listview.
 	private int mTotalItemCount;
 
+	// for mScroller, scroll back from header or footer.
 	private int mScrollBack;
 	private final static int SCROLLBACK_HEADER = 0;
 	private final static int SCROLLBACK_FOOTER = 1;
 
-	private final static int SCROLL_DURATION = 200;
-	private final static int PULL_LOAD_MORE_DELTA = 50;
-	private final static float OFFSET_RADIO = 1.8f;
+	private final static int SCROLL_DURATION = 200; // scroll back duration
+	private final static int PULL_LOAD_MORE_DELTA = 50; // when pull up >= 50px
+														// at bottom, trigger
+														// load more.
+	private final static float OFFSET_RADIO = 1.8f; // support iOS like pull
+													// feature.
 
 	private boolean isFirst = false;
-
-	public CarlendarListView(Context context) {
+	/**
+	 * @param context
+	 */
+	public RefreshListView(Context context) {
 		super(context);
 		initWithContext(context);
 	}
 
-	public CarlendarListView(Context context, AttributeSet attrs) {
+	public RefreshListView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		initWithContext(context);
 	}
 
-	public CarlendarListView(Context context, AttributeSet attrs, int defStyle) {
+	public RefreshListView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		initWithContext(context);
-	}
-
-	protected void dispatchDraw(Canvas canvas) {
-		super.dispatchDraw(canvas);
-		if (!this.isVisible)
-			return;
-		Log.e("debug", "listview@@@isdrawchild:"+isTitleViewNeed);
-		if(isTitleViewNeed)
-			drawChild(canvas, this.mTitle, getDrawingTime());
-	}
-
-	protected void onLayout(boolean changed, int left, int top, int right,
-			int bottom) {
-		super.onLayout(changed, left, top, right, bottom);
-		if (this.mTitle == null)
-			return;
-		if(isTitleViewNeed){
-			this.mTitle.layout(0, 0, this.mWidth, this.mHeight);
-			layoutTitle(getFirstVisiblePosition());
-		}
-	}
-
-	protected void onMeasure(int width, int heigth) {
-		super.onMeasure(width, heigth);
-		if (this.mTitle == null)
-			return;
-		if(isTitleViewNeed)
-		measureChild(this.mTitle, width, heigth);
-		this.mWidth = this.mTitle.getMeasuredWidth();
-		this.mHeight = this.mTitle.getMeasuredHeight();
-	}
-
-	public void setAdapter(ListAdapter adapter) {
-		if (mIsFooterReady == false) {
-			mIsFooterReady = true;
-			addFooterView(mFooterView);
-		}
-		this.mAdapter = ((CarlendarListAdapter) adapter);
-		super.setAdapter(adapter);
-	}
-
-	public void setTitle(View titleView) {
-		this.mTitle = titleView;
-		if (this.mTitle != null)
-			setFadingEdgeLength(0);
-		requestLayout();
-	}
-
-	public void layoutTitle(int firstVisiblePosition) {
-		if ((this.mTitle == null) || (this.mAdapter == null))
-			return;
-		int titleState=this.mAdapter.getTitleState(firstVisiblePosition);
-		Log.i("debug", "listview@@@firstvisible:"+firstVisiblePosition+"[titlestate:"+titleState);
-		switch (titleState) {
-		case 0:
-			this.isVisible = false;
-			break;
-		case 1:
-			if (this.mTitle.getTop() != 0)
-				this.mTitle.layout(0, 0, this.mWidth, this.mHeight);
-			this.mAdapter.setTitleText(this.mTitle, firstVisiblePosition);
-			this.isVisible = true;
-			break;
-		case 2:
-			View localView = getChildAt(0);
-			if (localView == null)
-				return;
-			int firstViewBottom = localView.getBottom();
-			int titleHeight = this.mTitle.getHeight();
-			if (firstViewBottom >= titleHeight)
-				firstViewBottom = 0;
-			else
-				firstViewBottom -= titleHeight;
-			this.mAdapter.setTitleText(this.mTitle, firstVisiblePosition);
-			if (this.mTitle.getTop() != firstViewBottom)
-				this.mTitle.layout(0, firstViewBottom, this.mWidth,
-						firstViewBottom + this.mHeight);
-			this.isVisible = true;
-		default:
-			break;
-		}
 	}
 
 	private void initWithContext(Context context) {
 		mScroller = new Scroller(context, new DecelerateInterpolator());
 		this.setHeaderDividersEnabled(false);
 		this.setFooterDividersEnabled(false);
+		// XListView need the scroll event, and it will dispatch the event to
+		// user's listener (as a proxy).
 		super.setOnScrollListener(this);
 
+		// init header view
 		mHeaderView = new RefreshListViewHeader(context);
 		mHeaderViewContent = (RelativeLayout) mHeaderView
 				.findViewById(R.id.xlistview_header_content);
@@ -162,17 +96,36 @@ public class CarlendarListView extends ListView implements OnScrollListener {
 				.findViewById(R.id.xlistview_header_time);
 		addHeaderView(mHeaderView);
 
+		// init footer view
 		mFooterView = new RefreshListViewFooter(context);
+		// init header height
 		mHeaderView.getViewTreeObserver().addOnGlobalLayoutListener(
 				new OnGlobalLayoutListener() {
+					@SuppressWarnings("deprecation")
 					public void onGlobalLayout() {
 						mHeaderViewHeight = mHeaderViewContent.getHeight();
 						getViewTreeObserver()
 								.removeGlobalOnLayoutListener(this);
 					}
 				});
+		
 	}
 
+	@Override
+	public void setAdapter(ListAdapter adapter) {
+		// make sure XListViewFooter is the last footer view, and only add once.
+		if (mIsFooterReady == false) {
+			mIsFooterReady = true;
+			addFooterView(mFooterView);//M
+		}
+		super.setAdapter(adapter);
+	}
+
+	/**
+	 * enable or disable pull down refresh feature.
+	 * 
+	 * @param enable
+	 */
 	public void setPullRefreshEnable(boolean enable) {
 		mEnablePullRefresh = enable;
 		if (!mEnablePullRefresh) { // disable, hide the content
@@ -182,6 +135,11 @@ public class CarlendarListView extends ListView implements OnScrollListener {
 		}
 	}
 
+	/**
+	 * enable or disable pull up load more feature.
+	 * 
+	 * @param enable
+	 */
 	public void setPullLoadEnable(boolean enable) {
 		mEnablePullLoad = enable;
 		if (!mEnablePullLoad) {
@@ -189,7 +147,7 @@ public class CarlendarListView extends ListView implements OnScrollListener {
 			mFooterView.setOnClickListener(null);
 		} else {
 
-			mFooterView.show();
+			mFooterView.show();   
 			mPullLoading = false;
 			mFooterView.setState(RefreshListViewFooter.STATE_NORMAL);
 			// both "pull up" and "click" will invoke load more.
@@ -201,6 +159,10 @@ public class CarlendarListView extends ListView implements OnScrollListener {
 		}
 	}
 
+
+	/**
+	 * stop refresh, reset header view.
+	 */
 	public void stopRefresh() {
 		if (mPullRefreshing == true) {
 			mPullRefreshing = false;
@@ -208,6 +170,9 @@ public class CarlendarListView extends ListView implements OnScrollListener {
 		}
 	}
 
+	/**
+	 * stop load more, reset footer view.
+	 */
 	public void stopLoadMore() {
 		if (mPullLoading == true) {
 			mPullLoading = false;
@@ -215,6 +180,11 @@ public class CarlendarListView extends ListView implements OnScrollListener {
 		}
 	}
 
+	/**
+	 * set last refresh time
+	 * 
+	 * @param time
+	 */
 	public void setRefreshTime(String time) {
 		mHeaderTimeView.setText(time);
 	}
@@ -229,26 +199,32 @@ public class CarlendarListView extends ListView implements OnScrollListener {
 	private void updateHeaderHeight(float delta) {
 		mHeaderView.setVisiableHeight((int) delta
 				+ mHeaderView.getVisiableHeight());
-		if (mEnablePullRefresh && !mPullRefreshing) { //
+		if (mEnablePullRefresh && !mPullRefreshing) { // 
 			if (mHeaderView.getVisiableHeight() > mHeaderViewHeight) {
 				mHeaderView.setState(RefreshListViewHeader.STATE_READY);
 			} else {
 				mHeaderView.setState(RefreshListViewHeader.STATE_NORMAL);
 			}
 		}
-		setSelection(0);
+		setSelection(0); // scroll to top each time
 	}
 
+	/**
+	 * reset header view's height.
+	 */
 	private void resetHeaderHeight() {
 		int height = mHeaderView.getVisiableHeight();
-		if (!isFirst) {
-			if (height == 0)
+		Log.d("text","resetHeaderHeight# ---- mHeaderView "+mHeaderView.getVisiableHeight());
+		if(!isFirst){			
+			if (height == 0) // not visible.
 				return;
+			// refreshing and header isn't shown fully. do nothing.
 			if (mPullRefreshing && height <= mHeaderViewHeight) {
 				return;
 			}
 		}
-		int finalHeight = 0;
+		int finalHeight = 0; // default: scroll back to dismiss header.
+		// is refreshing, just scroll back to show all the header.
 		if (mPullRefreshing && height > mHeaderViewHeight) {
 			finalHeight = mHeaderViewHeight;
 		}
@@ -261,7 +237,8 @@ public class CarlendarListView extends ListView implements OnScrollListener {
 	private void updateFooterHeight(float delta) {
 		int height = mFooterView.getBottomMargin() + (int) delta;
 		if (mEnablePullLoad && !mPullLoading) {
-			if (height > PULL_LOAD_MORE_DELTA) {
+			if (height > PULL_LOAD_MORE_DELTA) { // height enough to invoke load
+													// more.
 				mFooterView.setState(RefreshListViewFooter.STATE_READY);
 			} else {
 				mFooterView.setState(RefreshListViewFooter.STATE_NORMAL);
@@ -293,6 +270,7 @@ public class CarlendarListView extends ListView implements OnScrollListener {
 		if (mLastY == -1) {
 			mLastY = ev.getRawY();
 		}
+
 		switch (ev.getAction()) {
 		case MotionEvent.ACTION_DOWN:
 			mLastY = ev.getRawY();
@@ -302,31 +280,31 @@ public class CarlendarListView extends ListView implements OnScrollListener {
 			mLastY = ev.getRawY();
 			if (getFirstVisiblePosition() == 0
 					&& (mHeaderView.getVisiableHeight() > 0 || deltaY > 0)) {
-				isTitleViewNeed = false;
+				// the first item is showing, header has shown or pull down.
 				updateHeaderHeight(deltaY / OFFSET_RADIO);
 				invokeOnScrolling();
 			} else if (getLastVisiblePosition() == mTotalItemCount - 1
 					&& (mFooterView.getBottomMargin() > 0 || deltaY < 0)) {
-				if (getLastVisiblePosition() != 1)
+				// last item, already pulled up or want to pull up.
+				if(getLastVisiblePosition()!=1)
 					updateFooterHeight(-deltaY / OFFSET_RADIO);
-			} else {
-				isTitleViewNeed = true;
 			}
 			break;
 		default:
-			mLastY = -1;
+			mLastY = -1; // reset
 			if (getFirstVisiblePosition() == 0) {
+				// invoke refresh
 				if (mEnablePullRefresh
 						&& mHeaderView.getVisiableHeight() > mHeaderViewHeight) {
 					mPullRefreshing = true;
-					mHeaderView
-							.setState(RefreshListViewHeader.STATE_REFRESHING);
+					mHeaderView.setState(RefreshListViewHeader.STATE_REFRESHING);
 					if (mListViewListener != null) {
 						mListViewListener.onRefresh();
 					}
 				}
 				resetHeaderHeight();
 			} else if (getLastVisiblePosition() == mTotalItemCount - 1) {
+				// invoke load more.
 				if (mEnablePullLoad
 						&& mFooterView.getBottomMargin() > PULL_LOAD_MORE_DELTA) {
 					startLoadMore();
@@ -337,8 +315,7 @@ public class CarlendarListView extends ListView implements OnScrollListener {
 		}
 		return super.onTouchEvent(ev);
 	}
-
-	public void startRefresh(boolean isFirst) {
+	public void startRefresh(boolean isFirst){
 		this.isFirst = isFirst;
 		float deltaY = 500.0f;
 		updateHeaderHeight(deltaY / OFFSET_RADIO);
@@ -366,14 +343,17 @@ public class CarlendarListView extends ListView implements OnScrollListener {
 		mScrollListener = l;
 	}
 
+
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		if (mScrollListener != null) {
 			mScrollListener.onScrollStateChanged(view, scrollState);
 		}
 	}
 
+
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
+		// send to user's listener
 		mTotalItemCount = totalItemCount;
 		if (mScrollListener != null) {
 			mScrollListener.onScroll(view, firstVisibleItem, visibleItemCount,
@@ -381,16 +361,24 @@ public class CarlendarListView extends ListView implements OnScrollListener {
 		}
 	}
 
-	public void setXListViewListener(IXListViewListener listener) {
-		mListViewListener = listener;
+	public void setXListViewListener(IXListViewListener l) {
+		mListViewListener = l;
 	}
 
+	/**
+	 * you can listen ListView.OnScrollListener or this one. it will invoke
+	 * onXScrolling when header/footer scroll back.
+	 */
 	public interface OnXScrollListener extends OnScrollListener {
 		public void onXScrolling(View view);
 	}
 
+	/**
+	 * implements this interface to get refresh/load more event.
+	 */
 	public interface IXListViewListener {
 		public void onRefresh();
+
 		public void onLoadMore();
 	}
 }
