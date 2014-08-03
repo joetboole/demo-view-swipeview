@@ -13,47 +13,47 @@ import java.util.List;
 
 public class CarlendarListAdapter extends BaseAdapter implements
 		SectionIndexer, AbsListView.OnScrollListener {
-	private Context context;
+	private Context mContext;
 	private List<String> mList;
-	private String[] sections;
+	private String[] mSections;
 
 	public int getCount() {
 		return this.mList.size();
 	}
 
-	public Object getItem(int paramInt) {
-		return this.mList.get(paramInt);
+	public Object getItem(int position) {
+		return this.mList.get(position);
 	}
 
-	public long getItemId(int paramInt) {
-		return paramInt;
+	public long getItemId(int position) {
+		return position;
 	}
 
-	public int getPositionForSection(int paramInt) {
-		String str = this.sections[paramInt];
+	public int getPositionForSection(int index) {
+		String str = this.mSections[index];
 		return this.mList.indexOf(str);
 	}
 
 	public int getSectionForPosition(int firstVisiblePosition) {
 		String str = (String) this.mList.get(firstVisiblePosition);
-		for (int i = 0; i < this.sections.length; ++i) {
-			if (this.sections[i] == str)
-				return i;
+		for (int sectionPosition = 0; sectionPosition < this.mSections.length; ++sectionPosition) {
+			if (this.mSections[sectionPosition] == str)
+				return sectionPosition;
 		}
 		return 0;
 	}
 
 	public Object[] getSections() {
-		return this.sections;
+		return this.mSections;
 	}
 
 	public int getTitleState(int firstVisiblePosition) {
 		int j = 0;
 		if ((firstVisiblePosition >= 0) && (getCount() != 0)) {
-			int i = getSectionForPosition(firstVisiblePosition);
-			if ((i != -1) && (i <= this.sections.length)) {
-				i = getPositionForSection(1 + getSectionForPosition(firstVisiblePosition));
-				if ((i == -1) || (firstVisiblePosition != i - 1))
+			int listPosition = getSectionForPosition(firstVisiblePosition);
+			if ((listPosition != -1) && (listPosition <= this.mSections.length)) {
+				listPosition = getPositionForSection(1 + getSectionForPosition(firstVisiblePosition));
+				if ((listPosition == -1) || (firstVisiblePosition != listPosition - 1))
 					j = 1;
 				else
 					j = 2;
@@ -65,11 +65,11 @@ public class CarlendarListAdapter extends BaseAdapter implements
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder = new ViewHolder();
 		if (convertView == null) {
-			convertView = LayoutInflater.from(this.context).inflate(
+			convertView = LayoutInflater.from(this.mContext).inflate(
 					R.layout.item, null);
 			viewHolder.title = ((TextView) convertView
 					.findViewById(R.id.item_title));
-			viewHolder.content = ((CarlendarSwipeView) convertView
+			viewHolder.carlendarSwipeView = ((CarlendarSwipeView) convertView
 					.findViewById(R.id.item_content));
 			convertView.setTag(viewHolder);
 		} else {
@@ -91,25 +91,24 @@ public class CarlendarListAdapter extends BaseAdapter implements
 		return convertView;
 	}
 
-	public void onScroll(AbsListView paramAbsListView, int paramInt1,
-			int paramInt2, int paramInt3) {
-		System.out.println("onScroll");
-		((CarlendarListView) paramAbsListView).layoutTitle(paramInt1);
+	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
+            int totalItemCount) {
+		((CarlendarListView) view).layoutTitle(firstVisibleItem);
 	}
 
 	public void onScrollStateChanged(AbsListView paramAbsListView, int paramInt) {
 	}
 
-	public void setTitleText(View paramView, int paramInt) {
-		String str = (String) this.mList.get(paramInt);
-		((TextView) paramView).setText(str);
+	public void setTitleText(View titleView, int index) {
+		String str = (String) this.mList.get(index);
+		((TextView) titleView).setText(str);
 	}
 
-	public void update(List<String> paramList, Context paramContext) {
-		this.context = paramContext;
-		this.sections = new String[26];
-		Collections.sort(paramList);
-		this.mList = paramList;
+	public void update(List<String> list, Context context) {
+		this.mContext = context;
+		this.mSections = new String[26];
+		Collections.sort(list);
+		this.mList = list;
 		int i = 0;
 		for (int j = 0; j < this.mList.size(); ++j) {
 			String str2 = (String) this.mList.get(j);
@@ -120,14 +119,14 @@ public class CarlendarListAdapter extends BaseAdapter implements
 				str1 = (String) this.mList.get(j - 1);
 			if (str1.equals(str2))
 				continue;
-			this.sections[i] = str2;
+			this.mSections[i] = str2;
 			++i;
 		}
 		notifyDataSetChanged();
 	}
 
 	class ViewHolder {
-		CarlendarSwipeView content;
+		CarlendarSwipeView carlendarSwipeView;
 		TextView title;
 	}
 }
