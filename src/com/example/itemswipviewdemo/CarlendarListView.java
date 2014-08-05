@@ -119,6 +119,9 @@ public class CarlendarListView extends ListView implements OnScrollListener {
 			return;
 		int titleState=this.mAdapter.getTitleState(firstVisiblePosition);
 		Log.i("debug", "listview@@@firstvisible:"+firstVisiblePosition+"[titlestate:"+titleState);
+		if(firstVisiblePosition%3==0){
+			titleState=1;
+		}
 		switch (titleState) {
 		case 0:
 			this.isVisible = false;

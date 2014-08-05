@@ -94,7 +94,7 @@ public class CarlendarListAdapter extends BaseAdapter implements
 
 	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
             int totalItemCount) {
-		((CarlendarListView) view).layoutTitle(firstVisibleItem);
+		((CarlendarListView) view).layoutTitle(firstVisibleItem-1);
 	}
 
 	public void onScrollStateChanged(AbsListView paramAbsListView, int paramInt) {
